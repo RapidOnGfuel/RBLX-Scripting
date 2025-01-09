@@ -1,4 +1,5 @@
 # WIP
+[Go to AR2 Section](#AR2)
 
 -All scripts tested on Argon, I will not guarantee support with any other executors. 
 Argon is the BEST free executor and has 100% sUNC + 100% UNC, and is available for everyone to use below: 
@@ -10,9 +11,9 @@ https://discord.gg/theargon
    FULL ERROR:
    PICTURE OF ERROR: (ss ur screen)
    TIMESTAMP:
-   
-[Go to AR2 Section](#AR2)
 
+
+   
 
 # AR2
 (Apocalypse Rising 2)
