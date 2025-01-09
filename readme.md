@@ -15,7 +15,7 @@ https://discord.gg/theargon
  
  -FULL ERROR (the more descriptive u are the easier and faster I can fix it):
  
- -PICTURE OF ERROR: (ss ur screen)
+ -PICTURE/VIDEO OF ERROR: (ss ur screen) or use OBS, upload it to streamable, and attach the streamable link as well
  
  -TIMESTAMP:
 
