@@ -1,3 +1,6 @@
+-- struggling to do certain things like parsing through containers, will be listed as "Unknown" until I do so.. 
+-- open source so feel free to modify anything as your own as long as u keep my name in there at the top (just "Rapid") will do
+
 -- Variables
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
