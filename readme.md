@@ -10,7 +10,7 @@ https://discord.gg/theargon
  
  -EXECUTOR USED:
  
- -FULL ERROR:
+ -FULL ERROR (the more descriptive u are the easier and faster I can fix it):
  
  -PICTURE OF ERROR: (ss ur screen)
  
