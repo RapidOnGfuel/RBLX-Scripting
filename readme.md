@@ -16,7 +16,7 @@ TO DO:
 - [x] ESP (player)
 - [ ] ESP (loot) - HALFWAY!
 - [ ] Hitbox Expander (HEAD)
-- [ ] No Recoil (With % so like 100% would be 0 recoil)
+- [ ] No Recoil (With Percentages on a slider) (In script Hub)
 - [ ] No Spread (Bullets always go in the middle of the crosshair
 - [ ] Instant Reload
 - [ ] Aim assist of some kind (with a UI LIB)
