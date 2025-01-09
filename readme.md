@@ -14,8 +14,12 @@
 
 TO DO:
 - [x] ESP (player)
-- [] ESP (loot) - HALFWAY!
-- [] Aim assist of some kind (with a UI LIB)
-- [] Make most if not all executors supported
-- [] Make a script hub with it
-- 
+- [ ] ESP (loot) - HALFWAY!
+- [ ] Hitbox Expander (HEAD)
+- [ ] No Recoil (With % so like 100% would be 0 recoil)
+- [ ] No Spread (Bullets always go in the middle of the crosshair
+- [ ] Instant Reload
+- [ ] Aim assist of some kind (with a UI LIB)
+- [ ] Make most if not all executors supported
+- [ ] Make a script hub with it and add more features
+ 
