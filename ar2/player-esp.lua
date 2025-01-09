@@ -1,3 +1,6 @@
+-- I need to make it refresh on playerlist change, and stuff like that and I need to optimize it because its very rudimentary
+-- WILL BE IMPLEMENTING ALL OF THESE INTO A SCRIPT HUB SOME TIME, AND WILL KEEP THE SOURCE OF INDIVIDUAL STUFF HERE.
+
 -- Variables
 local players = game:GetService("Players")
 local localPlayer = players.LocalPlayer
