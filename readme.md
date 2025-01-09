@@ -7,13 +7,14 @@ https://discord.gg/theargon
 
  -Please report any issues or errors in issues in this format: (USE THE F9 IN GAME CONSOLE)
  Doing Error reports in such way will help me fix your issue
-   EXECUTOR USED:
-   FULL ERROR:
-   PICTURE OF ERROR: (ss ur screen)
-   TIMESTAMP:
-
-
-   
+ 
+ -EXECUTOR USED:
+ 
+ -FULL ERROR:
+ 
+ -PICTURE OF ERROR: (ss ur screen)
+ 
+ -TIMESTAMP:
 
 # AR2
 (Apocalypse Rising 2)
