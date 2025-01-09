@@ -1,4 +1,7 @@
 # WIP
+Please keep in mind I am working on ONE game at a time, I will do game requests on my discord server when I make it.
+I will also announce and do polls on what games YOU want me to add next, and the option of 4 games.
+If the game has a good anticheat (ex: ER:LC) I will not make a script for it, so please test around so I can keep pumping out stuff for you guys
 [Go to AR2 Section](#AR2)
 
 -All scripts tested on Argon, I will not guarantee support with any other executors. 
