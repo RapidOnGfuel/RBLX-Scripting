@@ -1,5 +1,8 @@
 # WIP
-For AR2 (Apocalypse Rising 2)
+[Go to AR2 Section](#AR2))
+
+# AR2
+(Apocalypse Rising 2)
 -Please execute when you have fully spawned in, and **NOT** In the main menu where you customize your character
 
 -LOAD IN TO THE ACTUAL GAME AND NOT THE LOBBY!
