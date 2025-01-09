@@ -10,3 +10,12 @@
    FULL ERROR:
    PICTURE OF ERROR: (ss ur screen)
    TIMESTAMP:
+
+
+TO DO:
+- [x] ESP (player)
+- [] ESP (loot) - HALFWAY!
+- [] Aim assist of some kind (with a UI LIB)
+- [] Make most if not all executors supported
+- [] Make a script hub with it
+- 
