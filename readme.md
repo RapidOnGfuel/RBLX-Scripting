@@ -18,6 +18,7 @@ https://discord.gg/theargon
 # AR2
 (Apocalypse Rising 2)
 -Please execute when you have fully spawned in, and **NOT** In the main menu where you customize your character
+-this will break the esp (both player and loot, as the items haven't rendered yet and I don't want to make checks for that :) )
 -LOAD IN TO THE ACTUAL GAME AND NOT THE LOBBY!
 
 TO DO (AR2):
