@@ -1,11 +1,12 @@
 # WIP
-Please execute when you have fully spawned in, and **NOT** In the main menu where you customize your character
-LOAD IN TO THE ACTUAL GAME AND NOT THE LOBBY!
- All scripts tested on Argon, I will not guarantee support with any other executors. Argon is the BEST free executor, and is available for everyone to use here: https://discord.gg/theargon 
+-Please execute when you have fully spawned in, and **NOT** In the main menu where you customize your character
 
- Please report any issues or errors in issues in this format:
+-LOAD IN TO THE ACTUAL GAME AND NOT THE LOBBY!
 
- EXECUTOR USED:
- FULL ERROR:
- PICTURE OF ERROR: (ss ur screen)
- TIMESTAMP:
+-All scripts tested on Argon, I will not guarantee support with any other executors. Argon is the BEST free executor, and is available for everyone to use here: https://discord.gg/theargon 
+
+ -Please report any issues or errors in issues in this format:
+   EXECUTOR USED:
+   FULL ERROR:
+   PICTURE OF ERROR: (ss ur screen)
+   TIMESTAMP:
