@@ -1,9 +1,12 @@
 # WIP
+For AR2 (Apocalypse Rising 2)
 -Please execute when you have fully spawned in, and **NOT** In the main menu where you customize your character
 
 -LOAD IN TO THE ACTUAL GAME AND NOT THE LOBBY!
 
--All scripts tested on Argon, I will not guarantee support with any other executors. Argon is the BEST free executor, and is available for everyone to use here: https://discord.gg/theargon 
+-All scripts tested on Argon, I will not guarantee support with any other executors. 
+Argon is the BEST free executor and has 100% sUNC + 100% UNC, and is available for everyone to use below: 
+https://discord.gg/theargon 
 
  -Please report any issues or errors in issues in this format: (USE THE F9 IN GAME CONSOLE)
    EXECUTOR USED:
@@ -11,8 +14,7 @@
    PICTURE OF ERROR: (ss ur screen)
    TIMESTAMP:
 
-
-TO DO:
+TO DO (AR2):
 - [x] ESP (player)
 - [ ] ESP (loot) - HALFWAY!
 - [ ] Hitbox Expander (HEAD)
