@@ -17,8 +17,8 @@ local localPlayer = players.LocalPlayer
 local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
 local rootPart = character:WaitForChild("HumanoidRootPart")
 local refreshRate = 0.2 -- Refresh every 0.2 seconds
-local maxRange = 3000 -- Maximum distance to track players
 local playerESPEnabled = false
+local playerESPRange = 3000 -- Default range for Player ESP
 
 -- Function to create chams and distance tracker
 local function createPlayerESP(targetPlayer)
@@ -45,7 +45,7 @@ local function createPlayerESP(targetPlayer)
             billboard.Size = UDim2.new(0, 200, 0, 50)
             billboard.StudsOffset = Vector3.new(0, 3, 0)
             billboard.AlwaysOnTop = true
-
+            
             local textLabel = Instance.new("TextLabel")
             textLabel.Size = UDim2.new(1, 0, 1, 0)
             textLabel.BackgroundTransparency = 1
@@ -67,14 +67,14 @@ local function handlePlayerESP(targetPlayer)
         local humanoidRootPart = targetCharacter:FindFirstChild("HumanoidRootPart")
         local distance = (humanoidRootPart.Position - rootPart.Position).Magnitude
 
-        if distance <= maxRange then
+        if playerESPEnabled and distance <= playerESPRange then
             createPlayerESP(targetPlayer)
             if targetCharacter:FindFirstChild("DistanceTracker") then
                 local textLabel = targetCharacter.DistanceTracker:FindFirstChildOfClass("TextLabel")
                 textLabel.Text = string.format("%s - %d studs", targetPlayer.Name, math.ceil(distance))
             end
         else
-            -- Remove ESP if out of range
+            -- Remove ESP if out of range or disabled
             if targetCharacter:FindFirstChild("PlayerChams") then
                 targetCharacter.PlayerChams:Destroy()
             end
@@ -87,7 +87,6 @@ end
 
 -- Function to update player ESP dynamically
 local function updatePlayerESP()
-    if not playerESPEnabled then return end
     for _, player in ipairs(players:GetPlayers()) do
         if player ~= localPlayer then
             handlePlayerESP(player)
@@ -120,12 +119,40 @@ Visualssec1:Toggle {
     callback = function(enabled)
         playerESPEnabled = enabled
         print("Player ESP is now: " .. tostring(enabled))
+        if not playerESPEnabled then
+            -- Remove all ESP elements when disabled
+            for _, player in ipairs(players:GetPlayers()) do
+                if player.Character then
+                    if player.Character:FindFirstChild("PlayerChams") then
+                        player.Character.PlayerChams:Destroy()
+                    end
+                    if player.Character:FindFirstChild("DistanceTracker") then
+                        player.Character.DistanceTracker:Destroy()
+                    end
+                end
+            end
+        end
+    end
+}
+
+Visualssec1:Slider {
+    Name = "Player ESP Distance",
+    Default = playerESPRange,
+    Min = 100,
+    Max = 5000,
+    Decimals = 0,
+    Flag = "playerESPRange",
+    callback = function(distance)
+        playerESPRange = distance
+        print("Player ESP Distance is now: " .. playerESPRange)
     end
 }
 
 -- Main loop to update ESP
 game:GetService("RunService").RenderStepped:Connect(function()
-    updatePlayerESP()
+    if playerESPEnabled then
+        updatePlayerESP()
+    end
 end)
 
 -- GUI Elements for Loot ESP
@@ -140,7 +167,7 @@ Visualssec2:Toggle {
 
 Visualssec2:Slider {
     Name = "Loot ESP Distance",
-    Default = lootRange,
+    Default = 3000,
     Min = 100,
     Max = 5000,
     Decimals = 0,
