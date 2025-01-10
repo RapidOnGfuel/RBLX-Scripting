@@ -1,20 +1,18 @@
--- struggling to do certain things like parsing through containers, will be listed as "Unknown" until I do so.. 
--- open source so feel free to modify anything as your own as long as u keep my name in there at the top (just "Rapid") will do
 
--- Variables
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local rootPart = character:WaitForChild("HumanoidRootPart")
 local lootDirectory = game.Workspace:FindFirstChild("Loot")
-local lootRange = 3000 -- Range in studs to find loot
+local lootRange = 3000 
 
--- Function to create ESP marker
-local function createESP(container, lootName, distance)
-    if not container:FindFirstChild("ContainerESP") then
-        local billboard = Instance.new("BillboardGui")
+
+local function updateESP(container, lootItems, distance)
+    local billboard = container:FindFirstChild("ContainerESP")
+    if not billboard then
+        billboard = Instance.new("BillboardGui")
         billboard.Name = "ContainerESP"
-        billboard.Adornee = container.PrimaryPart or container:FindFirstChildWhichIsA("BasePart")
-        billboard.Size = UDim2.new(0, 200, 0, 50)
+        billboard.Adornee = container:FindFirstChildWhichIsA("BasePart") or container.PrimaryPart
+        billboard.Size = UDim2.new(0, 200, 0, 50 + (#lootItems * 20))
         billboard.StudsOffset = Vector3.new(0, 3, 0)
         billboard.AlwaysOnTop = true
 
@@ -23,30 +21,46 @@ local function createESP(container, lootName, distance)
         textLabel.BackgroundTransparency = 1
         textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
         textLabel.TextStrokeTransparency = 0
-        textLabel.TextScaled = true
-        textLabel.Text = string.format("%s - %d studs", lootName, math.ceil(distance))
+        textLabel.TextScaled = false
+        textLabel.TextYAlignment = Enum.TextYAlignment.Top
+        textLabel.Text = string.format("Distance: %d studs\n%s", math.ceil(distance), table.concat(lootItems, "\n"))
         textLabel.Parent = billboard
 
         billboard.Parent = container
+    else
+        billboard.TextLabel.Text = string.format("Distance: %d studs\n%s", math.ceil(distance), table.concat(lootItems, "\n"))
     end
 end
 
--- Recursive function to search for loot containers
+
+local function getLootItems(container)
+    local items = {}
+    for _, item in ipairs(container:GetDescendants()) do
+        if item:IsA("Part") or item:IsA("Model") then
+            table.insert(items, item.Name) 
+        end
+    end
+    return items
+end
+
+
 local function searchContainers(playerPosition)
-    for _, container in ipairs(lootDirectory:GetDescendants()) do
-        if container:IsA("Model") and container:FindFirstChild("PrimaryPart") or container:FindFirstChildWhichIsA("BasePart") then
-            local containerPosition = container:GetModelCFrame().p -- Get container's position
+    for _, container in ipairs(lootDirectory:GetChildren()) do
+        if container:IsA("Model") and (container:FindFirstChildWhichIsA("BasePart") or container.PrimaryPart) then
+            local containerPosition = container:GetModelCFrame().p
             local distance = (containerPosition - playerPosition).Magnitude
             if distance <= lootRange then
-                -- Extract loot data
-                local lootData = container:FindFirstChild("LootData")
-                if lootData and lootData:IsA("StringValue") then
-                    createESP(container, lootData.Value, distance)
+
+                local lootItems = getLootItems(container)
+                if #lootItems > 0 then
+                    updateESP(container, lootItems, distance)
                 else
-                    createESP(container, "Unknown Loot", distance)
+                    if container:FindFirstChild("ContainerESP") then
+                        container.ContainerESP:Destroy()
+                    end
                 end
             else
-                -- Clear ESP if out of range
+
                 if container:FindFirstChild("ContainerESP") then
                     container.ContainerESP:Destroy()
                 end
@@ -55,11 +69,11 @@ local function searchContainers(playerPosition)
     end
 end
 
--- Main loop
+
 while true do
     if lootDirectory then
-        local playerPosition = rootPart.Position -- Get current player location
-        searchContainers(playerPosition) -- Cross-check containers with player position
+        local playerPosition = rootPart.Position
+        searchContainers(playerPosition)
     end
-    wait(0.5) -- Refresh every 0.5 seconds
+    wait(0.1)
 end
