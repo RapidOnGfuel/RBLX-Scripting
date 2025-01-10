@@ -11,89 +11,122 @@ local Aimingsec2 = Tab:Section{name = "Silent Aimbot", column = 2}
 local Visualssec1 = Tab2:Section{name = "Wallhacks", column = 1}
 local Visualssec2 = Tab2:Section{name = "Loot ESP", column = 2}
 
--- Loot ESP Variables
-local lootESPEnabled = false
-local lootRange = 600 -- Default range in studs to display loot
-local Loot = workspace.Loot
-local Drawings = {}
+-- Variables for Player ESP
+local players = game:GetService("Players")
+local localPlayer = players.LocalPlayer
+local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+local rootPart = character:WaitForChild("HumanoidRootPart")
+local refreshRate = 0.2 -- Refresh every 0.2 seconds
+local maxRange = 3000 -- Maximum distance to track players
+local playerESPEnabled = false
 
-local function CreateDrawing(type, props)
-    local drawing = Drawing.new(type)
-    for prop, val in pairs(props) do
-        drawing[prop] = val
+-- Function to create chams and distance tracker
+local function createPlayerESP(targetPlayer)
+    if targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        local targetCharacter = targetPlayer.Character
+
+        -- Add "Highlight" (chams effect) if not already present
+        if not targetCharacter:FindFirstChild("PlayerChams") then
+            local highlight = Instance.new("Highlight")
+            highlight.Name = "PlayerChams"
+            highlight.Adornee = targetCharacter
+            highlight.FillColor = Color3.new(1, 0, 0) -- Red fill
+            highlight.OutlineColor = Color3.new(1, 1, 1) -- White outline
+            highlight.FillTransparency = 0.5
+            highlight.OutlineTransparency = 0
+            highlight.Parent = targetCharacter
+        end
+
+        -- Add BillboardGui for distance tracking
+        if not targetCharacter:FindFirstChild("DistanceTracker") then
+            local billboard = Instance.new("BillboardGui")
+            billboard.Name = "DistanceTracker"
+            billboard.Adornee = targetCharacter:FindFirstChild("HumanoidRootPart")
+            billboard.Size = UDim2.new(0, 200, 0, 50)
+            billboard.StudsOffset = Vector3.new(0, 3, 0)
+            billboard.AlwaysOnTop = true
+
+            local textLabel = Instance.new("TextLabel")
+            textLabel.Size = UDim2.new(1, 0, 1, 0)
+            textLabel.BackgroundTransparency = 1
+            textLabel.TextColor3 = Color3.new(1, 1, 1) -- White text
+            textLabel.TextStrokeTransparency = 0
+            textLabel.TextScaled = true
+            textLabel.Text = "Calculating..."
+            textLabel.Parent = billboard
+
+            billboard.Parent = targetCharacter
+        end
     end
-    return drawing
 end
 
-local function updateDrawings()
-    if not lootESPEnabled then
-        for _, drawing in pairs(Drawings) do
-            drawing.Visible = false
-        end
-        return
-    end
+-- Function to handle ESP for a player
+local function handlePlayerESP(targetPlayer)
+    if targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        local targetCharacter = targetPlayer.Character
+        local humanoidRootPart = targetCharacter:FindFirstChild("HumanoidRootPart")
+        local distance = (humanoidRootPart.Position - rootPart.Position).Magnitude
 
-    local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    for instance, drawing in pairs(Drawings) do
-        if instance:IsA("CFrameValue") then
-            local value = instance.Value.Position
-            local distance = (value - playerPosition).Magnitude
-            if distance <= lootRange then
-                local screenPosition, onScreen = workspace.CurrentCamera:WorldToViewportPoint(value)
-                if onScreen then
-                    drawing.Position = Vector2.new(screenPosition.X, screenPosition.Y - 20) -- Offset to place above the item
-                    drawing.Visible = true
-                    drawing.Text = string.format("%s\n%d studs", instance.Name, math.ceil(distance))
-                else
-                    drawing.Visible = false
-                end
-            else
-                drawing.Visible = false
+        if distance <= maxRange then
+            createPlayerESP(targetPlayer)
+            if targetCharacter:FindFirstChild("DistanceTracker") then
+                local textLabel = targetCharacter.DistanceTracker:FindFirstChildOfClass("TextLabel")
+                textLabel.Text = string.format("%s - %d studs", targetPlayer.Name, math.ceil(distance))
+            end
+        else
+            -- Remove ESP if out of range
+            if targetCharacter:FindFirstChild("PlayerChams") then
+                targetCharacter.PlayerChams:Destroy()
+            end
+            if targetCharacter:FindFirstChild("DistanceTracker") then
+                targetCharacter.DistanceTracker:Destroy()
             end
         end
     end
 end
 
-for _, instance in ipairs(Loot:GetDescendants()) do
-    if instance:IsA("CFrameValue") then
-        local value = instance.Value.Position
-        local drawing = CreateDrawing("Text", {
-            Text = tostring(instance.Name),
-            Color = Color3.fromRGB(255, 255, 255),
-            OutlineColor = Color3.fromRGB(0, 0, 0),
-            Center = true,
-            Outline = true,
-            Position = Vector2.new(value.X, value.Y),
-            Size = 15,
-        })
-        Drawings[instance] = drawing
+-- Function to update player ESP dynamically
+local function updatePlayerESP()
+    if not playerESPEnabled then return end
+    for _, player in ipairs(players:GetPlayers()) do
+        if player ~= localPlayer then
+            handlePlayerESP(player)
+        end
     end
 end
 
-Loot.DescendantAdded:Connect(function(instance)
-    if instance:IsA("CFrameValue") then
-        local value = instance.Value.Position
-        local drawing = CreateDrawing("Text", {
-            Text = tostring(instance.Name),
-            Color = Color3.fromRGB(255, 255, 255),
-            OutlineColor = Color3.fromRGB(0, 0, 0),
-            Center = true,
-            Outline = true,
-            Position = Vector2.new(value.X, value.Y),
-            Size = 15,
-        })
-        Drawings[instance] = drawing
+-- Handle player joins and leaves
+players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function()
+        handlePlayerESP(player)
+    end)
+end)
+
+players.PlayerRemoving:Connect(function(player)
+    if player.Character then
+        if player.Character:FindFirstChild("PlayerChams") then
+            player.Character.PlayerChams:Destroy()
+        end
+        if player.Character:FindFirstChild("DistanceTracker") then
+            player.Character.DistanceTracker:Destroy()
+        end
     end
 end)
 
-Loot.DescendantRemoving:Connect(function(instance)
-    if instance:IsA("CFrameValue") and Drawings[instance] then
-        Drawings[instance]:Remove()
-        Drawings[instance] = nil
+-- GUI Elements for Player ESP
+Visualssec1:Toggle {
+    Name = "Player ESP",
+    flag = "playerESPEnabled", 
+    callback = function(enabled)
+        playerESPEnabled = enabled
+        print("Player ESP is now: " .. tostring(enabled))
     end
-end)
+}
 
-game:GetService("RunService").RenderStepped:Connect(updateDrawings)
+-- Main loop to update ESP
+game:GetService("RunService").RenderStepped:Connect(function()
+    updatePlayerESP()
+end)
 
 -- GUI Elements for Loot ESP
 Visualssec2:Toggle {
