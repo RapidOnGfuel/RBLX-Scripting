@@ -25,7 +25,7 @@ https://discord.gg/theargon
 - this will break the esp (both player and loot, as the items haven't rendered in yet)
 
 TO DO (AR2):
-- [x] ESP (player)
+- [x] -- ESP (player) --
 - [ ] ESP (loot) - HALFWAY! (need to parse through containers and grab item names)
 - [ ] Hitbox Expander (HEAD)
 - [ ] No Recoil (With Percentages on a slider) (In script Hub)
